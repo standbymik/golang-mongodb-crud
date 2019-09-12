@@ -58,6 +58,7 @@ func main() {
 	// Gets all users
 	// Method:   GET
 	// Resource: this to get all all users
+
 	app.Handle("GET", "/users", func(ctx context.Context) {
 		results := []User{}
 
@@ -67,7 +68,7 @@ func main() {
 		} else {
 			fmt.Println("Results All: ", results)
 		}
-		ctx.JSON(context.Map{"response": results})
+		ctx.JSON(context.Map{"response all": results})
 	})
 
 	// Gets a single user
@@ -84,7 +85,7 @@ func main() {
 		if err != nil {
 			ctx.JSON(context.Map{"response": err.Error()})
 		}
-		ctx.JSON(context.Map{"response": result})
+		ctx.JSON(context.Map{"response msisdn": result})
 	})
 
 	// Method:   POST
@@ -167,9 +168,14 @@ func main() {
 
 	})
 
-	app.Handle("POST", "/check_user", func(ctx context.Context) {
-		err := ctx.Params()
-		fmt.Println(err)
+	app.Handle("GET", "/check_user", func(ctx context.Context) {
+		p := ctx.URLParam("id")
+		fmt.Println(p)
+	})
+
+	app.Handle("POST", "/check_user2", func(ctx context.Context) {
+		p := ctx.PostValue("id")
+		fmt.Println(p)
 	})
 
 	app.Run(iris.Addr(":8080"), iris.WithoutServerError(iris.ErrServerClosed))
